@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
+import authMiddleware from "../middleware/authMiddleware";
 import {
   createTask,
   getTasks,
@@ -10,12 +11,6 @@ import {
 
 const router: Router = Router();
 
-router.post(
-  '/',
-  [body('title').notEmpty().withMessage('Title is required')],
-  createTask
-);
-
 /**
  * @swagger
  * /api/tasks:
@@ -25,7 +20,7 @@ router.post(
  *       200:
  *         description: Lista de tareas.
  */
-router.get('/', getTasks);
+router.get('/', authMiddleware, getTasks);
 
 /**
  * @swagger
@@ -43,11 +38,21 @@ router.get('/', getTasks);
  *                 type: string
  *               description:
  *                 type: string
+ *           example:
+ *             title: "Mi nueva tarea"
+ *             description: "Descripción opcional de la tarea"
  *     responses:
  *       201:
  *         description: Tarea creada exitosamente.
  */
-router.post('/', createTask);
+router.post(
+  '/',
+  [
+    authMiddleware,
+    body('title').notEmpty().withMessage('Title is required'),
+  ],
+  createTask
+);
 
 /**
  * @swagger
@@ -63,8 +68,10 @@ router.post('/', createTask);
  *     responses:
  *       200:
  *         description: Tarea encontrada.
+ *       404:
+ *         description: Tarea no encontrada.
  */
-router.get('/:id', getTaskById);
+router.get('/:id', authMiddleware, getTaskById);
 
 /**
  * @swagger
@@ -90,11 +97,17 @@ router.get('/:id', getTaskById);
  *                 type: string
  *               completed:
  *                 type: boolean
+ *           example:
+ *             title: "Tarea actualizada"
+ *             description: "Descripción actualizada"
+ *             completed: true
  *     responses:
  *       200:
  *         description: Tarea actualizada exitosamente.
+ *       404:
+ *         description: Tarea no encontrada.
  */
-router.put('/:id', updateTask);
+router.put('/:id', authMiddleware, updateTask);
 
 /**
  * @swagger
@@ -110,7 +123,9 @@ router.put('/:id', updateTask);
  *     responses:
  *       200:
  *         description: Tarea eliminada exitosamente.
+ *       404:
+ *         description: Tarea no encontrada.
  */
-router.delete('/:id', deleteTask);
+router.delete('/:id', authMiddleware, deleteTask);
 
 export default router;
