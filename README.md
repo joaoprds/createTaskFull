@@ -2,7 +2,7 @@
 
 ## 🌍 Important Links:
 
-- **Frontend (Login and Task Management):** [https://frontaskbyjoao.netlify.app/login](https://frontaskbyjoao.netlify.app/login)
+- **Frontend (Login and Task Management):** https://frontaskbyjoao.netlify.app
 - **Backend (API):** [https://createtaskfull.onrender.com](https://createtaskfull.onrender.com)
 - **API Documentation (Swagger):** [https://createtaskfull.onrender.com/api-docs/](https://createtaskfull.onrender.com/api-docs/)
 
